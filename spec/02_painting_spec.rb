@@ -7,6 +7,16 @@ describe 'Painting' do
   let(:mona) { Painting.new(name: 'Mona Lisa', artist_id: leo.save.id) }
 
   before(:each) do
+    DB[:conn].execute('DROP TABLE IF EXISTS artists')
+    sql = <<~SQL
+      CREATE TABLE IF NOT EXISTS artists (
+        id INTEGER PRIMARY KEY,
+        name TEXT
+      )
+    SQL
+
+    DB[:conn].execute(sql)
+
     DB[:conn].execute('DROP TABLE IF EXISTS paintings')
     sql = <<~SQL
       CREATE TABLE IF NOT EXISTS paintings (
